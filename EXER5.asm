@@ -8,6 +8,7 @@
 .code
 start:
 
+    ; PRINTING LOWERCASE ALPHABET
     mov cl, 'a' ; print character 'A'
     mov dl, cl
     mov ah, 02h
@@ -139,11 +140,16 @@ start:
     mov ah, 02h
     int 21h
 
+    ; PRINTING LOWERCASE ALPHABET
+
+    ; PRINT NEW LINE
     mov cl, 0Ah
     mov dl, cl
     mov ah, 02h
     int 21h
+    ; PRINT NEW LINE
 
+    ; PRINT UPPERCASE ALPHABET WITH SPACES
     mov cl, 'A' ; 
     mov dl, cl
     mov ah, 02h
@@ -420,6 +426,7 @@ start:
     mov dl, cl
     mov ah, 02h
     int 21h
+    ; PRINT UPPERCASE ALPHABET WITH SPACES
 
 
     int 27h
