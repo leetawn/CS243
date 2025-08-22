@@ -6,7 +6,7 @@
 .model small
 .stack 100h
 
-.data 
+.data
     line1 db "Ethan Benedict Labajo", 0Ah, '$'
     line2 db "Bachelor of Science in Computer Science 2nd Year", 0Ah, '$'
     line3 db "College of Computer Studies", 0Ah, '$'
