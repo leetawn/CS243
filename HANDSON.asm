@@ -52,6 +52,19 @@ main:
     mov ax, @data
     mov ds, ax
 
+    mov ah, 06h      
+    mov al, 0        
+    mov bh, 07h      
+    mov cx, 0           
+    mov dx, 184fh        
+    int 10h          
+
+    mov ah, 02h      
+    mov bh, 0       
+    mov dh, 0      
+    mov dl, 0      
+    int 10h        
+
     mov ah, 09h
     mov dx, offset header
     int 21h
@@ -206,7 +219,6 @@ lp5:
     inc si
     mov byte ptr [si], '$'
 
-    mov byte ptr [si], '$'
 
     call pnl
     call pnl
@@ -466,10 +478,6 @@ lp5:
     mov dx, offset ed
     int 21h
 
-
-
-
-
     int 27h
 pnl proc
     mov ah, 09h
@@ -484,7 +492,6 @@ pclr proc
     int 10h
     ret
 pclr endp
-
 
 
 end main
