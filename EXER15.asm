@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ; Filename: EXER14.asm
+=======
+; Filename: EXER15.asm
+>>>>>>> 2071454b7c7a9efe4c4d4132f536b10d8dba63e7
 ; Name: Ethan Benedict M. Labajo
 ; Date: September 12, 2025
 ; Display multiple string variables in a single line

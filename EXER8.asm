@@ -1,6 +1,6 @@
 ; Filename: EXER8.ASM
 ; Display colored patterns (Big Cross) using just spaces
-; Red Cross with Blue background, 5 rows x 8 columns
+; Red Cross with Blue background, 6 rows x 8 columns
 ; Name: Ethan Benedict Labajo
 ; Date: August 22, 2025
  

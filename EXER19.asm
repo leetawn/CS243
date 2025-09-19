@@ -1,8 +1,7 @@
 ; Filename: EXER19.asm
 ; Name: Ethan Benedict M. Labajo
 ; Date: September 12, 2025
-; Get character input continuously get character input and display back input
-; Enter key is pressed 
+; Display Good morning, world! or Good afternoon, world! depending on inputted char.
 
 .model small
 .stack 100h
@@ -10,8 +9,8 @@
 .data
     char db ?
     TimePrompt db 0Ah, "Is it after 12 noon (Y/N)?: $"
-    gmmsg db "Good Morning!$"
-    gamsg db "Good Afternoon!$"
+    gmmsg db "Good morning, world!$"
+    gamsg db "Good afternoon, world!$"
     exitMsg db 0Ah, "Exiting program... $"
     nl db 0Ah, '$'
 

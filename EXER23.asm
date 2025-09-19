@@ -28,8 +28,12 @@ main:
     mov char, al
     cmp al, 'A'
     je IsA
+<<<<<<< HEAD
 
     jmp notA
+=======
+    jne NotA
+>>>>>>> 2071454b7c7a9efe4c4d4132f536b10d8dba63e7
 
 IsA:
     mov ah, 09h
