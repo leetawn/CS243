@@ -162,7 +162,25 @@ check_d:
 
 check_e:
     cmp al, 'e'
+    je ext
     jmp invalid_choice
+
+ext:
+    call pnl
+    call pnl
+    mov ah, 09h
+    mov bl, 070h
+    mov cx, 13
+    int 10h 
+    mov dx, offset ex
+    int 21h
+    call pnl
+    call pnl
+    mov dx, offset dn
+    int 21h
+
+    int 27h
+
 
 invalid_choice:
     call pnl
@@ -529,19 +547,6 @@ done:
     int 21h
 
     
-
-ext:
-    call pnl
-    call pnl
-    mov ah, 09h
-    mov bl, 070h
-    mov cx, 13
-    int 10h 
-    mov dx, offset ex
-    int 21h
-
-    int 27h
-
 pclr proc
     mov ah, 09h
     mov bl, 000h
