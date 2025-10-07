@@ -49,8 +49,8 @@ main:
     mov al, bl
     cmp al, 0
 
-    jl negative ; When number is negative
-    jge positive ; When number is positive
+    jl negative 
+    jge positive 
 
 negative:
     mov ah, 02h
@@ -59,7 +59,7 @@ negative:
 
     mov ah, 02h
     mov al, bl
-    neg al ; Negate value first, because we represent negative numbers in two's complement
+    neg al 
 
     add al, '0'
     mov dl, al

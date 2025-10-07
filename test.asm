@@ -1,18 +1,20 @@
-; Filename: EXER31.asm
+
+; Filename: EXER32.asm
 ; Name: Ethan Benedict M. Labajo
 ; Date: October 6, 2025
-; Displaying Product of Two Numbers
+; Displaying the quotient of two numbers
 
 .model small
-.stack 100h
+.stack 100
 
 .data
-    nl db 0Ah, '$'
-    
-    p1 db "Enter first number: $"
-    p2 db "Enter second number: $"
 
-    output db "The product is: $"
+    nl db 0Ah, '$'
+
+    p1 db "Enter first number (0-9): $"
+    p2 db "Enter second number (1-9): $"
+
+    output db "The quotient is: $"
 
 .code
 main:
@@ -37,49 +39,26 @@ main:
     mov ah, 01h
     int 21h 
     sub al, '0'
-    
-    mov cl, bl          ; Move first number to CL
-    mul cl              ; Multiply AL by CL, result in AX
-
-    mov bx, ax          ; Save the full product in BX
+    mov cl, al
 
     call pnl
+
+    mov al, bl
+    xor ah, ah
+    div cl
+
+    mov bh, al          ; Save quotient in BH
 
     mov ah, 09h
     mov dx, offset output
     int 21h
 
-    mov ax, bx          ; Restore product to AX
-
-    cmp ax, 10
-    jl od
-
-td:
-    mov cl, 10
-    div cl
-
-    ; al = quotient (tens), ah = remainder (ones)
-    mov dl, al          ; Save quotient
-    add dl, '0'         ; Convert to ASCII
-    mov dh, ah          ; Save remainder
-    
-    mov ah, 02h         ; Print tens digit
-    int 21h
-
-    mov dl, dh          ; Get remainder
-    add dl, '0'         ; Convert to ASCII
-    mov ah, 02h         ; Print ones digit
-    int 21h
-
-    jmp done
-
-od:
-    add al, '0'
+    mov al, bh          ; Restore quotient
+    add al, '0'         ; Convert quotient to ASCII first
     mov dl, al
-    mov ah, 02h
+    mov ah, 02h         ; Then set up for display
     int 21h
-
-done:
+    
     int 27h
 
 pnl proc
@@ -87,6 +66,8 @@ pnl proc
     mov dx, offset nl
     int 21h
     ret
+
 pnl endp
+
 
 end main

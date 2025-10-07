@@ -46,16 +46,16 @@ main:
     xor ah, ah
     div cl
 
-    mov bh, al          ; Save quotient in BH
+    mov bh, al          
 
     mov ah, 09h
     mov dx, offset output
     int 21h
 
-    mov al, bh          ; Restore quotient
-    add al, '0'         ; Convert quotient to ASCII first
+    mov al, bh          
+    add al, '0'        
     mov dl, al
-    mov ah, 02h         ; Then set up for display
+    mov ah, 02h         
     int 21h
     
     int 27h

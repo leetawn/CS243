@@ -107,29 +107,29 @@ main_loop:
     int 21h
 
     mov dx, offset addition
-    mov bl, 04Eh
+    mov bl, 000h
     call print_colored
     call pnl
 
-    mov bl, 01Ch
+    mov bl, 000h ; add your own colors fucker
     mov dx, offset subtraction
     call print_colored
 
     call pnl
 
-    mov bl, 05Fh
+    mov bl, 000h ; add your own colors fucker
     mov dx, offset multiplication
     call print_colored
 
     call pnl
 
-    mov bl, 03Fh
+    mov bl, 000h ; add your own colors fucker
     mov dx, offset division
     call print_colored
 
     call pnl
 
-    mov bl, 06Eh
+    mov bl, 000h ; add your own colors fucker
     mov dx, offset exit
     call print_colored
 
@@ -259,14 +259,14 @@ pdg:
 
 td:
     mov ah, 0
-    mov dl, '1' ; Since we know number > 10, we can print 1 first
+    mov dl, '1'
     mov ah, 02h
     int 21h
 
-    sub bl, 10  ; We then subtract the sum by 10
-                ; To get the digit at the ones place
+    sub bl, 10  
+                
     mov al, bl
-    add al, '0' ; Convert the digit back to ascii
+    add al, '0' 
     mov dl, al
     mov ah, 02h
     int 21h
@@ -335,8 +335,8 @@ sb:
     mov al, bl
     cmp al, 0
 
-    jl negative ; When number is negative
-    jge positive ; When number is positive
+    jl negative 
+    jge positive 
 
 negative:
     mov ah, 02h
@@ -345,7 +345,7 @@ negative:
 
     mov ah, 02h
     mov al, bl
-    neg al ; Negate value first, because we represent negative numbers in two's complement
+    neg al 
 
     add al, '0'
     mov dl, al
@@ -390,10 +390,10 @@ ml:
     int 21h 
     sub al, '0'
     mov mn2, al 
-    mov cl, bl          ; Move first number to CL
-    mul cl              ; Multiply AL by CL, result in AX
+    mov cl, bl         
+    mul cl             
 
-    mov bx, ax          ; Save the full product in BX
+    mov bx, ax          
 
     call pnl
 
@@ -422,7 +422,7 @@ ml:
     mov dx, offset mout3
     int 21h
 
-    mov ax, bx          ; Restore product to AX
+    mov ax, bx         
 
     cmp ax, 10
     jl od
@@ -431,17 +431,16 @@ ted:
     mov cl, 10
     div cl
 
-    ; al = quotient (tens), ah = remainder (ones)
-    mov dl, al          ; Save quotient
-    add dl, '0'         ; Convert to ASCII
-    mov dh, ah          ; Save remainder
+    mov dl, al          
+    add dl, '0'         
+    mov dh, ah          
     
-    mov ah, 02h         ; Print tens digit
+    mov ah, 02h        
     int 21h
 
-    mov dl, dh          ; Get remainder
-    add dl, '0'         ; Convert to ASCII
-    mov ah, 02h         ; Print ones digit
+    mov dl, dh         
+    add dl, '0'         
+    mov ah, 02h         
     int 21h
 
     jmp wait_enter
@@ -512,16 +511,16 @@ dv:
     xor ah, ah
     div cl
 
-    mov bh, al          ; Save quotient in BH
+    mov bh, al          
 
     mov ah, 09h
     mov dx, offset dout3
     int 21h
 
-    mov al, bh          ; Restore quotient
-    add al, '0'         ; Convert quotient to ASCII first
+    mov al, bh          
+    add al, '0'         
     mov dl, al
-    mov ah, 02h         ; Then set up for display
+    mov ah, 02h         
     int 21h
     
     jmp wait_enter
@@ -534,8 +533,8 @@ wait_enter:
     int 21h
 
     mov ah, 01h
-    int 21h               ; waits for Enter
-    jmp main_loop         ; loop back to menu
+    int 21h              
+    jmp main_loop       
 
 
 
@@ -568,25 +567,24 @@ print_colored PROC
     push dx
     push si
 
-    mov si, dx          ; string pointer
-    mov ah, 03h         ; get current cursor position
+    mov si, dx          
+    mov ah, 03h         
     mov bh, 0
     int 10h
-    ; DH = row, DL = column
 
 next_char:
     mov al, [si]
     cmp al, '$'
     je done_color
 
-    mov ah, 09h         ; print character with color
+    mov ah, 09h       
     mov bh, 0
     mov cx, 1
     int 10h
 
     inc si
-    inc dl              ; move cursor right
-    mov ah, 02h         ; update cursor position
+    inc dl              
+    mov ah, 02h         
     int 10h
     jmp next_char
 

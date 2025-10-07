@@ -38,10 +38,10 @@ main:
     int 21h 
     sub al, '0'
     
-    mov cl, bl          ; Move first number to CL
-    mul cl              ; Multiply AL by CL, result in AX
+    mov cl, bl          
+    mul cl              
 
-    mov bx, ax          ; Save the full product in BX
+    mov bx, ax          
 
     call pnl
 
@@ -49,7 +49,7 @@ main:
     mov dx, offset output
     int 21h
 
-    mov ax, bx          ; Restore product to AX
+    mov ax, bx          
 
     cmp ax, 10
     jl od
@@ -58,17 +58,16 @@ td:
     mov cl, 10
     div cl
 
-    ; al = quotient (tens), ah = remainder (ones)
-    mov dl, al          ; Save quotient
-    add dl, '0'         ; Convert to ASCII
-    mov dh, ah          ; Save remainder
+    mov dl, al          
+    add dl, '0'         
+    mov dh, ah         
     
-    mov ah, 02h         ; Print tens digit
+    mov ah, 02h         
     int 21h
 
-    mov dl, dh          ; Get remainder
-    add dl, '0'         ; Convert to ASCII
-    mov ah, 02h         ; Print ones digit
+    mov dl, dh         
+    add dl, '0'         
+    mov ah, 02h        
     int 21h
 
     jmp done

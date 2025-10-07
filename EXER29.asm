@@ -60,14 +60,14 @@ pdg:
 
 td:
     mov ah, 0
-    mov dl, '1' ; Since we know number > 10, we can print 1 first
+    mov dl, '1' 
     mov ah, 02h
     int 21h
 
-    sub bl, 10  ; We then subtract the sum by 10
-                ; To get the digit at the ones place
+    sub bl, 10 
+               
     mov al, bl
-    add al, '0' ; Convert the digit back to ascii
+    add al, '0' 
     mov dl, al
     mov ah, 02h
     int 21h
