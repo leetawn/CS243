@@ -1,0 +1,643 @@
+; Filename: EXER37.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; Printing numbers 1-10 in a new line
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    tn db "10$"
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov cl, 1
+num_loop:
+    mov bl, cl
+    add bl, '0'
+    mov ah, 02h
+    mov dl, bl
+    int 21h
+
+    call pnl
+
+    inc cl
+    cmp cl, 10
+
+    jl num_loop
+
+done:
+    mov ah, 09h
+    mov dx, offset tn 
+    int 21h
+    call pnl
+    int 27h
+pnl proc
+    mov ah, 09h
+    mov dx, offset nl
+    int 21h
+    ret
+pnl endp
+
+end main
+
+; Filename: EXER38.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; Printing numbers 1-20 in one line
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    tn db "10$"
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov cl, 1
+num_loop:
+    cmp cl, 19
+    jg ptd
+    cmp cl, 10
+    jl pzd
+    jge pod
+
+
+pzd:
+    mov bl, cl
+    add bl, '0'
+    mov ah, 02h
+    mov dl, bl
+    int 21h
+    call pnl
+    jmp nxt
+
+pod:
+    mov bl, cl
+    mov ah, 02h
+    mov dl, '1'
+    int 21h
+    sub bl, 10
+    add bl, '0'
+    mov dl, bl
+    int 21h
+    call pnl
+    jmp nxt
+
+ptd:
+    mov bl, cl
+    mov ah, 02h
+    mov dl, '2'
+    int 21h
+    sub bl, 20
+    add bl, '0'
+    mov dl, bl
+    int 21h
+    jmp nxt
+
+nxt: 
+    inc cl
+    cmp cl, 21
+    jl num_loop
+
+done:
+    int 27h
+pnl proc
+    mov ah, 02h
+    mov dl, ' '
+    int 21h
+    ret
+pnl endp
+
+end main
+
+; Filename: EXER39.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; Check if number inputted is in range
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    
+    oor db "Error: Number is out of range!$"
+    prompt db "Enter a number from 1 to 8: $"
+    numbers db "1 2 3 4 5$"
+
+    num db ?
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+main_loop:
+    mov ah, 09h
+    mov dx, offset prompt
+    int 21h
+
+    mov ah, 01h
+    int 21h
+    sub al, '0'
+    mov num, al
+    mov cl, al
+
+    cmp cl, 1
+    jl out_of_range
+    cmp cl, 5
+    jg out_of_range
+
+    jmp done
+
+out_of_range:
+    call pnl
+    mov ah, 09h
+    mov dx, offset oor
+    int 21h
+
+    call pnl
+    jmp main_loop
+
+done:
+    call pnl
+    mov ah, 09h
+    mov dx, offset numbers
+    int 21h
+    call pnl
+    int 27h
+
+pnl proc
+    mov ah, 09h
+    mov dx, offset nl
+    int 21h
+
+    ret
+pnl endp
+end main
+
+; Filename: EXER40.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; Ask for input until input is 0
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    
+    prompt db "Enter a single digit number: $"
+    ty db "Thank you.$"
+
+    num db ?
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+main_loop:
+    mov ah, 09h
+    mov dx, offset prompt
+    int 21h
+
+    mov ah, 01h
+    int 21h
+    sub al, '0'
+    mov num, al
+    mov cl, al
+    call pnl
+    call pnl
+    cmp cl, 0
+    je done
+
+    jmp main_loop
+
+done:
+    mov ah, 09h
+    mov dx, offset ty
+    int 21h
+    call pnl
+    int 27h
+
+pnl proc
+    mov ah, 09h
+    mov dx, offset nl
+    int 21h
+
+    ret
+pnl endp
+end main
+
+; Filename: EXER41.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; ATM Menu, selecting an operation prints its name
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    hdr db "CIT-U ATM$"
+    choices db "a. Balance Inquiry", 0Ah, "b. Deposit", 0Ah, "c. Withdrawal", 0Ah, "d. Bills payment", 0Ah, "e. Exit", 0Ah, '$'
+
+    prompt db "Enter choice: $"
+
+    bi db "Balance Inquiry$"
+    ddp db "Deposit$"
+    wd db "Withdrawal$"
+    bpy db "Bills Payment$"
+    ty db "Exit. Thank you!$"
+
+    input db ?
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+main_loop:
+    mov ah, 09h
+    mov dx, offset hdr
+    int 21h
+
+    call pnl
+    call pnl
+
+    mov dx, offset choices
+    int 21h
+    call pnl
+
+    mov dx, offset prompt
+    int 21h
+
+    mov ah, 01h
+    int 21h
+    mov input, al
+
+    cmp input, 'a'
+    je balance
+    cmp input, 'b'
+    je deposit
+    cmp input, 'c'
+    je withdraw
+    cmp input, 'd'
+    je bills
+    cmp input, 'e'
+    je ext
+
+
+balance:
+    call pnl 
+    call pnl 
+    mov ah, 09h
+    mov dx, offset bi
+    int 21h
+    call pnl 
+    call pnl 
+    jmp main_loop
+deposit:
+    call pnl 
+    call pnl 
+    mov ah, 09h
+    mov dx, offset ddp
+    int 21h
+    call pnl 
+    call pnl 
+    jmp main_loop
+withdraw:
+    call pnl 
+    call pnl 
+    mov ah, 09h
+    mov dx, offset wd
+    int 21h
+    call pnl 
+    call pnl 
+    jmp main_loop
+bills:
+    call pnl 
+    call pnl 
+    mov ah, 09h
+    mov dx, offset bpy
+    int 21h
+    call pnl 
+    call pnl 
+    jmp main_loop
+ext:
+    call pnl 
+    call pnl 
+    mov ah, 09h
+    mov dx, offset ty
+    int 21h
+    call pnl 
+    call pnl 
+
+    int 27h
+pnl proc
+    mov ah, 09h
+    mov dx, offset nl
+    int 21h
+
+    ret
+pnl endp
+
+
+end main
+
+; Filename: EXER42.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; Add two numbers (1 or 2 digits)
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    first db "Enter first number: $"
+    second db "Enter second number: $"
+    output db "The sum is: $"
+
+    input1 db 100, ?, 100 dup('$')
+    input2 db 100, ?, 100 dup('$')
+
+    num1 db ?
+    num2 db ?
+    sum db ?
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov ah, 09h
+    mov dx, offset first
+    int 21h
+
+    mov ah, 0Ah
+    mov dx, offset input1
+    int 21h
+    call pnl
+
+    mov ah, 09h
+    mov dx, offset second
+    int 21h
+
+    mov ah, 0Ah
+    mov dx, offset input2
+    int 21h
+    call pnl
+
+    mov ah, 09h
+    mov dx, offset output
+    int 21h
+
+    ; FIRST INPUT - Check if 1 or 2 digits
+    mov cl, [input1+1]      ; get actual length
+    cmp cl, 1               ; is it 1 digit?
+    je one_digit_1          ; if yes, handle 1 digit
+    
+    ; Handle 2 digits
+    mov al, [input1+2]
+    sub al, '0'
+    mov bl, 10
+    mul bl
+    mov bl, [input1+3]
+    sub bl, '0'
+    add al, bl
+    jmp store_num1
+
+one_digit_1:
+    mov al, [input1+2]      ; just get the single digit
+    sub al, '0'
+
+store_num1:
+    mov num1, al
+
+    ; SECOND INPUT - Check if 1 or 2 digits
+    mov cl, [input2+1]      ; get actual length
+    cmp cl, 1               ; is it 1 digit?
+    je one_digit_2          ; if yes, handle 1 digit
+    
+    ; Handle 2 digits
+    mov al, [input2+2]
+    sub al, '0'
+    mov bl, 10
+    mul bl
+    mov bl, [input2+3]
+    sub bl, '0'
+    add al, bl
+    jmp store_num2
+
+one_digit_2:
+    mov al, [input2+2]      ; just get the single digit
+    sub al, '0'
+
+store_num2:
+    mov num2, al
+
+    ; Add the numbers
+    mov al, num1
+    add al, num2
+    mov sum, al
+    mov cx, 0
+
+convert_loop:
+    mov ah, 0
+    mov bl, 10
+    div bl
+    push ax
+    inc cx
+    cmp al, 0
+    jne convert_loop
+
+print_loop:
+    pop ax
+    add ah, '0'
+    mov dl, ah
+    mov ah, 02h
+    int 21h
+    loop print_loop
+
+    int 27h
+
+pnl proc
+    mov ah, 09h
+    mov dx, offset nl
+    int 21h
+    ret
+pnl endp
+
+end main
+
+; Filename: EXER43.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; Printing 5 digit number
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    prompt db "Enter a 5-digit number: $"
+    output db "You entered: $"
+    num db 5 dup(?)
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    mov ah, 09h
+    mov dx, offset prompt
+    int 21h
+
+    mov si, 0
+input_loop:
+    mov ah, 01h
+    int 21h
+
+    cmp al, 0Dh
+    je print_input
+
+    mov num[si], al
+    inc si
+    cmp si, 5
+    jl input_loop
+
+    call pnl
+    mov ah, 09h
+    mov dx, offset output
+    int 21h
+    mov cx, 5
+    mov si, 0
+print_input:
+    mov dl, num[si]
+    mov ah, 02h
+    int 21h
+
+    inc si
+    loop print_input
+
+    int 27h
+pnl proc
+    mov ah, 09h
+    mov dx, offset nl
+    int 21h
+    ret
+pnl endp
+
+    int 27h
+end main
+
+; Filename: EXER44.asm
+; Name: Ethan Benedict M. Labajo
+; Date: October 10, 2025
+; Greetings menu with 4 options
+
+.model small
+.stack 100
+
+.data
+    nl db 0Ah, '$'
+    menu db "1. Good Morning", 0Ah, "2. Good Afternoon", 0Ah, "3. Good Evening", 0Ah, "4. Exit Program", 0Ah, "Enter choice: ", '$'
+    credits db "Author: Ethan Benedict M. Labajo", 0Ah, "Assembler: Turbo Assembler (TASM)", 0Ah, "Target: DOSBox (8086 real mode)", '$'
+
+    morning db "Good morning!$"
+    afternoon db "Good afternoon!$"
+    evening db "Good evening!$"
+    invalid db "Invalid choice. Please try again.$"
+    exit db "Thank you! Program will now exit.$"
+
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+main_loop:
+    mov ah, 09h
+    mov dx, offset menu
+    int 21h
+
+    mov ah, 01h
+    int 21h
+
+    cmp al, '1'
+    je morning_fn
+    cmp al, '2'
+    je afternoon_fn
+    cmp al, '3'
+    je evening_fn
+    cmp al, '4'
+    je done
+
+    jmp invalid_fn
+
+invalid_fn:
+    call pnl
+    call pnl
+    mov ah, 09h
+    mov dx, offset invalid
+    int 21h
+    call pnl
+    call pnl
+    jmp main_loop
+
+morning_fn:
+    call pnl
+    call pnl
+    mov ah, 09h
+    mov dx, offset morning
+    int 21h
+    call pnl
+    call pnl
+    jmp main_loop
+
+afternoon_fn:
+    call pnl
+    call pnl
+    mov ah, 09h
+    mov dx, offset afternoon
+    int 21h
+    call pnl
+    call pnl
+    jmp main_loop
+
+evening_fn:
+    call pnl
+    call pnl
+    mov ah, 09h
+    mov dx, offset evening
+    int 21h
+    call pnl
+    call pnl
+    jmp main_loop
+
+done:
+    call pnl
+    call pnl
+    mov ah, 09h
+    mov dx, offset exit
+    int 21h
+    int 27h
+
+pnl proc
+    mov ah, 09h
+    mov dx, offset nl
+    int 21h
+    ret
+pnl endp
+
+
+end main

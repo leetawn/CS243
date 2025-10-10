@@ -107,29 +107,29 @@ main_loop:
     int 21h
 
     mov dx, offset addition
-    mov bl, 000h
+    mov bl, 070h
     call print_colored
     call pnl
 
-    mov bl, 000h ; add your own colors fucker
+    mov bl, 070h ; add your own colors fucker
     mov dx, offset subtraction
     call print_colored
 
     call pnl
 
-    mov bl, 000h ; add your own colors fucker
+    mov bl, 070h ; add your own colors fucker
     mov dx, offset multiplication
     call print_colored
 
     call pnl
 
-    mov bl, 000h ; add your own colors fucker
+    mov bl, 070h ; add your own colors fucker
     mov dx, offset division
     call print_colored
 
     call pnl
 
-    mov bl, 000h ; add your own colors fucker
+    mov bl, 070h ; add your own colors fucker
     mov dx, offset exit
     call print_colored
 
